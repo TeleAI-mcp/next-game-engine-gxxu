@@ -1,0 +1,36 @@
+name: Label Comment Bot
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check label and comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { issue, label } = context.payload;
+            const issueNumber = issue.number;
+            const labelName = label.name;
+            
+            let commentBody = '';
+            
+            if (labelName === 'bug') {
+              commentBody = 'Thank you for reporting this bug. Our team will investigate and fix it.';
+            } else if (labelName === 'enhancement') {
+              commentBody = 'Thanks for the enhancement suggestion! We appreciate your input.';
+            } else if (labelName === 'documentation') {
+              commentBody = 'Thank you for flagging this documentation issue. We will update it soon.';
+            }
+            
+            if (commentBody) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: commentBody
+              });
+            }
