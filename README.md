@@ -1,2 +1,3 @@
-# next-game-engine-gxxu
-Automated issue comment bot repository
+# Next Game Engine Gxxu
+
+Automated issue comment bot repository.
